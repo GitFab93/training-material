@@ -2,7 +2,7 @@
 layout: tutorial_hands_on
 
 title: Avian influenza viral strain analysis from gene segment sequencing data
-draft: true
+subtopic: one-health
 level: Intermediate
 questions:
 - With reassortment of gene segments being a common event in avian influenza virus (AIV) evolution, does it make sense to use a reference-based mapping approach for constructing consensus genome sequences for AIV samples?
@@ -14,6 +14,11 @@ objectives:
 - Construct a sample consensus genome from mapped reads
 - Generate per-segment phylogenetic trees of AIV consensus sequences
 time_estimation: 4H
+input_histories:
+- label: "UseGalaxy.eu"
+  history: https://usegalaxy.eu/published/history?id=0fc6b637aadbc8a2
+- label: "UseGalaxy.org"
+  history: https://usegalaxy.org/published/history?id=31cb33f8e6126823
 key_points:
 - Reassortment of gene segments makes reference-based mapping of influenza sequencing data challenging
 - An alternative to *de-novo* assembly can be mapping to a dynamically chosen reference genome
@@ -23,11 +28,10 @@ contributors:
 - wm75
 tags:
 - virology
-- public health
+- one-health
 ---
 
 
-# Introduction
 
 Of the four species of influenza viruses (Influenza A-D), *Influenza A* is the most virulent in human hosts and subtypes of it have been responsible for all historic flu pandemics.
 
@@ -61,61 +65,53 @@ Importantly, the sequence diversity of HA and (again to a lesser extent) of NA s
 
 # Prepare analysis history and data
 
-Any analysis should get its own Galaxy history. So let's start by creating a new one:
+In this tutorial you are going to work on a single avian influenza sample sequenced in paired-end mode on the Illumina platform, *i.e.* we are going to download two datasets of sequenced reads for that sample.
+
+In addition, we are going to base the analysis on a small collection of multiple reference sequences for each influenza gene segment. We prepared this collection for you from public [INSAFlu](https://insaflu.insa.pt/dashboard/) [data](https://insaflu.readthedocs.io/en/latest/uploading_data.html?highlight=references#uploading-reference-data).
+
+If you have your own curated collection of reference sequences, you should be able to use it to follow this tutorial without any problem. Note, however, that the analysis results referred to in many of the questions will be different if you are exchanging the reference collection.
+If you want to learn how you can create a Galaxy collection from your own references that is structured like the default we are suggesting here, you may want to follow the dedicated tutorial on [Using dataset collections]({% link topics/galaxy-interface/tutorials/collections/tutorial.md %}).
+
+# Get a history with reference data
+
+Any analysis should get its own Galaxy history, but in this tutorial we *won't* start with creating one.
+
+Instead, to save some time, you can copy an existing shared history on Galaxy Europe.
 
 > <hands-on-title>Prepare the Galaxy history</hands-on-title>
 >
-> 1. Create a new history for this analysis
+> 1. On Galaxy Europe, open the [shared history](https://usegalaxy.eu/published/history?id=0fc6b637aadbc8a2) with pre-prepared INSAFlu reference data.
 >
->    {% snippet faqs/galaxy/histories_create_new.md %}
+>    On the Galaxy US server, use this [shared history](https://usegalaxy.org/published/history?id=31cb33f8e6126823) instead.
+>
 >
 > 2. Rename the history
 >
->    {% snippet faqs/galaxy/histories_rename.md %}
+>    {% snippet faqs/galaxy/histories_rename.md name="Avian influenza tutorial" %}
 >
 {: .hands_on}
 
-## Get reference and sequenced samples data
-
-In this tutorial you are going to work on a single avian influenza sample sequenced in paired-end mode on the Illumina platform, *i.e.* we are going to download two datasets of sequenced reads for that sample.
-
-In addition, we are going to base the analysis on a small collection of multiple reference sequences for each influenza gene segment. We prepared this collection for you from public INSAFlu data.
-
-If you have your own curated collection of reference sequences, you should be able to use it for following this tutorial without any problem. Note, however, that the analysis results referred to in many of the questions will be different if you are exchanging the reference collection.
-If you want to learn how you can create a Galaxy collection from your own references that is structured like the default we are suggesting here, you may want to follow the dedicated tutorial on [Using dataset collections]({% link topics/galaxy-interface/tutorials/collections/tutorial.md %}).
+## Get the sequencing data
 
 > <hands-on-title>Get the data</hands-on-title>
 >
-> 1. {% tool [Upload](upload1) %} the forward and reverse reads of your sequenced sample to your history and turn them into a *Paired Collection*.
->    1. In the *"Download from web or upload from disk"* dialogue, switch to the `Collection` tab,
->       then configure the drop-down select boxes on that tab like this:
+> 1. Import the forward and reverse reads of the sequenced sample into your history and organize them into a *Paired Collection*.
+>
+>    ```
+>    https://usegalaxy.eu/api/datasets/4838ba20a6d86765171e4f201205515c/display?to_ext=fastqsanger.gz
+>    https://usegalaxy.eu/api/datasets/4838ba20a6d867657d09280baae4e1ec/display?to_ext=fastqsanger.gz
+>    ```
+>
+>    1. Copy the links above
+>    2. Open the {% tool [Upload](upload1) %} Manager
+>    3. In the top row of tabs select **Collection**
+>    4. Configure the drop-down select boxes on that tab like this:
 >       - *"Collection Type"*: `Pair`
 >       - *"File Type"*: `fastqsanger.gz`
->
->    2. Click on `Paste/Fetch data` and copy the following links over to the empty text box
->
->       ```
->       https://usegalaxy.eu/api/datasets/4838ba20a6d86765171e4f201205515c/display?to_ext=fastqsanger.gz
->       https://usegalaxy.eu/api/datasets/4838ba20a6d867657d09280baae4e1ec/display?to_ext=fastqsanger.gz
->       ```
->
->       and press `Start`.
->
->    3. Wait for the `Build` button to become enabled, click it, and, in the next dialogue, give a suitable **Name** to the new collection.
->
-> 2. Import the reference data collection into your history
->    1. Open the [shared history](https://usegalaxy.eu/u/wolfgang-maier/h/influenza-resources) with the pre-prepared INSAFlu reference data
->    2. Click on {% icon new-history %} *"Import"* in the upper right corner of the page
->    3. Choose a name for the new history (or go with the default), confirm by clicking Import and wait for the page to reload
->    4. In the history panel (which should now show the newly imported history),
->       click on the {% icon galaxy-gear %} icon in the bar just above the history's datasets,
->       select `Copy Datasets`, and wait for the center panel to refresh
->    5. In the center panel,
->       - make sure the imported history is selected as the *"Source History"*
->       - select the history you created for this tutorial as the *"Destination History"*
->       - under *"Source History"* select the `References per segment (INSAFlu)` collection for copying
->       - click *"Copy History Items"*
->    6. Switch to the tutorial history
+>    5. Click on **Paste/Fetch data** and paste the links you copied into the empty text box
+>    6. Press **Start**
+>    7. Wait for the **Build** button to become enabled, click it, and, in the next dialogue, give a suitable **Name**, like `Sequencing data`, to the new collection.
+>    8. Click on **Create collection**
 >
 {: .hands_on}
 
@@ -123,7 +119,7 @@ If you want to learn how you can create a Galaxy collection from your own refere
 
 > <hands-on-title>What is in the reference collection?</hands-on-title>
 >
-> 1. Step inside the uploaded reference collection by clicking on it.
+> 1. Step inside the imported reference collection by clicking on it.
 > 2. Expand individual elements of the collection by clicking on them to reveal more details about them.
 > 3. View the content of any element by clicking its {% icon galaxy-eye %}.
 >
@@ -160,7 +156,7 @@ The tool **fastp** lets us perform these tasks and obtain a nice quality report 
 
 > <hands-on-title>QC and read trimming/filtering with fastp</hands-on-title>
 >
-> 1. {% tool [fastp](toolshed.g2.bx.psu.edu/repos/iuc/fastp/fastp/0.23.2+galaxy0) %}
+> 1. {% tool [fastp](toolshed.g2.bx.psu.edu/repos/iuc/fastp/fastp/0.23.4+galaxy1) %}
 >    - *"Single-end or paired reads"*: `Paired Collection`
 >    - *"Select paired collection(s)"*: the uploaded paired collection of sequenced reads
 >    - In *"Filter Options"* under *"Length filtering options"*:
@@ -169,6 +165,20 @@ The tool **fastp** lets us perform these tasks and obtain a nice quality report 
 >      - *"Cut by quality in front (5')"*: `Yes`
 >      - *"Cut by quality in tail (3')"*: `Yes`
 >      - *"Cutting mean quality"*: `30`
+>
+>    > <details-title>fastp default settings</details-title>
+>    >
+>    > fastp comes with basic default settings for some of its many parameters.
+>    > In particular, with no explicit parameter specifications, the tool will still remove reads that
+>    > - have base qualities < 15 for more than 40% of their bases
+>    > - have more than 5 Ns in their sequence
+>    > - have a length < 15 bases (after removing poly-G tails from Illumina reads)
+>    >
+>    >   Because our input data has far longer MiSeq-generated reads, we can increase this length threshold to 30 bases as done above.
+>    >
+>    > These are very relaxed criteria that will only remove the least usable reads, but still assure minimal
+>    > quality standards that are good enough for many (including training) purposes.
+>    {: .details}
 >
 >    Running the tool will result in two outputs. One is a new paired collection with the processed reads, the other one is a report of initial quality, the processing actions performed and their effect on key quality metrics.
 >
@@ -184,7 +194,8 @@ The tool **fastp** lets us perform these tasks and obtain a nice quality report 
 >    > >
 >    > > 1. The forward reads were of worse quality in particular near their 3'-ends than the reverse reads and, consequently, were affected more strongly by trimming (see the different "quality" plots in the report).
 >    > > 2. Less than 2% of reads got discarded completely (the "Filtering result" section of the report says 98.03% of all reads were retained). In contrast, around 10% of all bases got discarded (compare total bases before and after filtering) so most reads got trimmed but not discarded.
->    > > 3. **fastp** is a tool with many hidden default actions in its various sections. Inside the *Filter Options* check *Quality filtering options* and the various defaults mentioned in the parameters help therein. One of these defaults is to discard reads with more than 5 Ns. These defaults are often reasonable, but it's good to be aware of them.
+>    > > 3. As explained in the "fastp default settings" box above, **fastp** is a tool with many hidden default actions in its various sections.
+>    > >    Inside the *Filter Options* inspect *Quality filtering options* and the various defaults mentioned in the parameters help therein. One of these defaults is to discard reads with more than 5 Ns. These defaults are often reasonable, but it's good to be aware of them.
 >    > >
 >    > {: .solution}
 >    {: .question}
@@ -236,7 +247,7 @@ Now that we have established that things *may* make sense, we can use the output
 
 > <hands-on-title>Obtaining sequences of top hits identified by VAPOR</hands-on-title>
 >
-> 1. {% tool [Replace parts of text](toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_find_and_replace/1.1.4) %} to extract just the name of the sequence from each line of VAPOR's output
+> 1. {% tool [Replace parts of text](toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_find_and_replace/9.3+galaxy1) %} to extract just the name of the sequence from each line of VAPOR's output
 >    - {% icon param-collection %} *"File to process"*: collection of score outputs of **VAPOR**
 >    - In {% icon param-repeat %} *"1. Find and Replace"*:
 >      - *"Find pattern"*: `^.+\t>(.+)$`
@@ -247,7 +258,7 @@ Now that we have established that things *may* make sense, we can use the output
 >    - *"Select first"*: `1` lines
 >    - {% icon param-collection %} *"from"*: output of **Replace**
 >
-> 3. {% tool [seqtk_subseq](toolshed.g2.bx.psu.edu/repos/iuc/seqtk/seqtk_subseq/1.3.1) %} to extract the reference sequences based on their names reported by VAPOR
+> 3. {% tool [seqtk_subseq](toolshed.g2.bx.psu.edu/repos/iuc/seqtk/seqtk_subseq/1.4+galaxy0) %} to extract the reference sequences based on their names reported by VAPOR
 >    - {% icon param-collection %} *"Input FASTA/Q file"*: `References per segment (INSAFlu)`
 >    - *"Select source of sequence choices"*: `FASTA/Q ID list`
 >    - {% icon param-collection %} *"Input ID list"*: the collection output of **Select first**
@@ -265,12 +276,22 @@ If things went well, the hybrid reference we just obtained should be close enoug
 
 > <hands-on-title>Shortening sequence titles</hands-on-title>
 >
-> 1. {% tool [Replace parts of text](toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_find_and_replace/1.1.4) %}
+> 1. {% tool [Replace parts of text](toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_find_and_replace/9.3+galaxy1) %}
 >    - {% icon param-file %} *"File to process"*: the hybrid reference genome; output of **Collapse Collection**
 >    - In {% icon param-repeat %} *"1. Find and Replace"*:
 >      - *"Find pattern"*: `^>([^|]+).+$`
 >      - *"Replace with"*: `>$1`
 >      - *"Find-Pattern is a regular expression"*: `Yes`
+>
+> 2. Add a tag to the output dataset
+>
+>    This is the hybrid reference genome that we are going to use for mapping now.
+>    It is an important intermediate result, to which we will need to return later, and to make that easier we are going to add a tag to it now for extra visibility in the history.
+>
+>    1. Click on the dataset to expand it
+>    2. Click on {% icon galaxy-tags %} **Add Tags**
+>    3. Enter a tag like `HybridRef` (tags have to consist of a single word)
+>    4. Confirm your choice by pressing Enter on the keyboard or clicking on the new name.
 >
 {: .hands_on}
 
@@ -278,13 +299,13 @@ Having polished the titles of the segments in our hybrid reference genome we are
 
 > <hands-on-title>Read mapping and quality control</hands-on-title>
 >
-> 1. {% tool [Map with BWA-MEM](toolshed.g2.bx.psu.edu/repos/devteam/bwa/bwa_mem/0.7.17.2) %}
+> 1. {% tool [Map with BWA-MEM](toolshed.g2.bx.psu.edu/repos/devteam/bwa/bwa_mem/0.7.18) %}
 >    - *"Will you select a reference genome from your history or use a built-in index?"*: `Use a genome from history and build index`
 >    - {% icon param-file %} *"Use the following dataset as the reference sequence"*: hybrid reference genome with shortened names; output of **Replace**
 >    - *"Single or Paired-end reads"*: `Paired Collection`
 >    - *"Select a paired collection"*: quality-trimmed reads; output of **fastp** in QC and Trimming
 >
-> 2. {% tool [Samtools view](toolshed.g2.bx.psu.edu/repos/iuc/samtools_view/samtools_view/1.15.1+galaxy0) %}
+> 2. {% tool [Samtools view](toolshed.g2.bx.psu.edu/repos/iuc/samtools_view/samtools_view/1.20+galaxy3) %}
 >    - {% icon param-file %} *"SAM/BAM/CRAM data set"*: mapped reads BAM dataset; output of **BWA-MEM**
 >    - *"What would you like to look at?"*: `A filtered/subsampled selection of reads`
 >    - In *"Configure filters"*:
@@ -324,9 +345,8 @@ Unfortunately, the tool we are going to use for this, **ivar consensus**, is not
 
 > <hands-on-title>Splitting mapped reads by genome segment</hands-on-title>
 >
-> 1. {% tool [Split BAM by Reference](toolshed.g2.bx.psu.edu/repos/iuc/bamtools_split_ref/bamtools_split_ref/2.5.1+galaxy0) %}
+> 1. {% tool [Split BAM by Reference](toolshed.g2.bx.psu.edu/repos/iuc/bamtools_split_ref/bamtools_split_ref/2.5.2+galaxy2) %}
 >    - {% icon param-file %} *"BAM dataset to split by reference"*: filtered mapped reads; output of **Samtools view**
->    - *"Select references (chromosomes and contigs) you would like to restrict bam to"*: `Unselect all`
 >
 {: .hands_on}
 
@@ -336,10 +356,12 @@ The output from this step has the desired collection structure, but the names of
 >
 > 1. {% tool [Select lines that match an expression](Grep1) %}
 >    - {% icon param-file %} *"Select lines from"*: the mapping reference; output of **Replace** in Mapping to a hybrid reference
+>
+>      {% icon tip %} This is the dataset you should have {% icon galaxy-tags %} tagged before. Lets hope you did!
 >    - *"that"*: `Matching`
 >    - *"the pattern"*: `^>.+`
 >
-> 2. {% tool [Replace parts of text](toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_find_and_replace/1.1.4) %}
+> 2. {% tool [Replace parts of text](toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_find_and_replace/9.3+galaxy1) %}
 >    - {% icon param-file %} *"File to process"*: output of **Select**
 >    - In {% icon param-repeat %} *"1. Find and Replace"*:
 >      - *"Find pattern"*: `^>(.+)$`
@@ -369,20 +391,20 @@ Now what if we cannot obtain a consensus base for a position with the above crit
 
 > <hands-on-title>Per-segment consensus construction</hands-on-title>
 >
-> 1. {% tool [ivar consensus](toolshed.g2.bx.psu.edu/repos/iuc/ivar_consensus/ivar_consensus/1.3.1+galaxy0) %}
+> 1. {% tool [ivar consensus](toolshed.g2.bx.psu.edu/repos/iuc/ivar_consensus/ivar_consensus/1.4.3+galaxy0) %}
 >    - {% icon param-collection %} *"Bam file"*: the relabeled collection of mapped reads; output of **Relabel identifiers**
 >    - *"Minimum quality score threshold to count base"*: `20`
 >    - *"Minimum frequency threshold"*: `0.7`
+>    - *"Minimum indel frequency threshold"*: `0.8`
 >    - *"Minimum depth to call consensus"*: `10`
->    - *"Exclude regions with smaller depth than the minimum threshold"*: `No`
->    - *"Use N instead of - for regions with less than minimum coverage"*: `Yes`
+>    - *"How to represent positions with coverage less than the minimum depth threshold"*: `Represent as N (-n N)`
 >
 >    The output is a consensus sequence in FASTA format, one per segment, with
 >    the names just providing a bit too much detail for our purpose.
 >
-> 2. {% tool [Replace parts of text](toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_find_and_replace/1.1.4) %}
+> 2. {% tool [Replace parts of text](toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_find_and_replace/9.3+galaxy1) %}
 >    - {% icon param-collection %} *"File to process"*: consensus sequences; output of **ivar consensus**
->    - In {% icon param-repeat %} *"1. Find and Replace"*:
+>    - In {% icon param-repeat %} *"1: Find and Replace"*:
 >      - *"Find pattern"*: `^>Consensus_(.*)_threshold_.*`
 >      - *"Replace with"*: `>$1`
 >      - *"Find-Pattern is a regular expression"*: `Yes`
@@ -405,30 +427,34 @@ Now what if we cannot obtain a consensus base for a position with the above crit
 # Placing segments on a phylogenetic tree
 
 The next logical step after obtaining the consensus sequences of segments of our sample is to explore how those sequences are related to the sequences in our reference collection.
-To do so, we are going to build multiple sequence alignments (MSAs) per segment of all reference sequences, add our sample segments to those alignments, and build phylogenetic trees, one per segment. We are going to use two rather standard tools, **MAFFT** and **IQTree**, for generating MSAs and trees, respectively.
+To do so, we are going to combine the reference sequences of all segments with their corresponding consensus sequence into one multiple sequence alignment (MSA) per segment, and use these to generate phylogenetic trees, again one per segment. We are going to use two rather standard tools, **MAFFT** and **IQTree**, for generating MSAs and trees, respectively.
 
 > <hands-on-title>Exploring phylogeny</hands-on-title>
 >
-> 1. {% tool [MAFFT](toolshed.g2.bx.psu.edu/repos/rnateam/mafft/rbc_mafft/7.508+galaxy0) %}
->    - {% icon param-collection %} *"Sequences to align"*: `References per segment (INSAFlu)`
->    - *"Data type"*: `Nucleic Acids`
->    - *"Matrix selection"*: `No matrix`
+> 1. {% tool [MAFFT](toolshed.g2.bx.psu.edu/repos/rnateam/mafft/rbc_mafft/7.526+galaxy0) %}
+>    - *"For multiple inputs generate"*: `one or several MSAs depending on input structure`
+>      - In *"Input batch"*:
+>        - {% icon param-repeat %} *"1: Input batch"*
+>          - {% icon param-collection %} *"Sequences to align"*: collection of `References per segment (INSAFlu)`
+>        - {% icon param-repeat %} *"2: Input batch"*
+>          - {% icon param-collection %} *"Sequences to align"*: collection of renamed consensus sequences; output of **Replace** on consensus sequences
+>    - *"Type of sequences"*: `Nucleic acids`
 >
->    The result is a collection of MSAs, each representing all reference sequences of one genome segment.
+>    Because both input batches are collections of eight elements each, the result is also a collection of eight MSAs, each aligning all reference sequences of one genome segment plus the consensus sequence we have obtained for that segment against each other.
 >
-> 2. {% tool [MAFFT add](toolshed.g2.bx.psu.edu/repos/rnateam/mafft/rbc_mafft_add/7.508+galaxy0) %}
->    - {% icon param-collection %} *"Sequences to add to the alignment"*: consensus sequences with simplified names; output of **Replace**
->    - {% icon param-collection %} *"Alignment"*: collection of MSAs; output of MAFFT
->    - *"What do you want to add to the alignment"*: `A single sequence`
->    - *"Keep alignment length"*: `No`
->
->    The result is a new collection with each of our sample consensus sequences added to the respective segment MSA.
->
-> 3. {% tool [IQTree](toolshed.g2.bx.psu.edu/repos/iuc/iqtree/iqtree/2.1.2+galaxy2) %}
->    - {% icon param-collection %} *"Specify input alignment file in PHYLIP, FASTA, NEXUS, CLUSTAL or MSF format."*: output of **MAFFT add**
+> 2. {% tool [IQ-TREE](toolshed.g2.bx.psu.edu/repos/iuc/iqtree/iqtree/2.3.6+galaxy0) %}
+>    - {% icon param-collection %} *"Specify input alignment file in PHYLIP, FASTA, NEXUS, CLUSTAL or MSF format."*: output of **MAFFT**
 >    - *"Specify sequence type ..."*: `DNA`
 >
-> 4. {% icon galaxy-eye %} Explore each of the final trees produced by IQTree for the different segments
+> 3. {% icon galaxy-eye %} Explore each of the final trees produced by IQTree for the different segments
+>
+>    There are two ways to explore the trees in Galaxy:
+>
+>    One option is to open the *Report and Final Tree* datasets produced by IQ-Tree.
+>    When you scroll down through their content, you will find that these feature simple text representations of the trees.
+>
+>    Another option is to expand the *MaxLikelihood Tree* datasets generated by IQ-Tree, then click on {% icon galaxy-barchart %} **Visualize**.
+>    This will let you launch the *Phylogenetic Tree Visualization* in the middle panel, which lets you explore the tree interactively and in different representations.
 >
 >    > <question-title></question-title>
 >    >

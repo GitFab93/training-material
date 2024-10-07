@@ -13,10 +13,19 @@ key_points:
   - "GitPod can be used to serve the GTN training materials"
 contributors:
   - shiltemann
+
+recordings:
+- captioners:
+  - shiltemann
+  date: '2021-02-15'
+  galaxy_version: '21.01'
+  length: 20M
+  youtube_id: _-wnsPttBCo
+  speakers:
+  - shiltemann
+
 ---
 
-
-# Introduction
 
 
 If you are working on your own training materials and want preview them online without installing anything on your computer, you can do this using GitPod!
@@ -69,7 +78,7 @@ If you are working on your own training materials and want preview them online w
 >    > <tip-title>Make this even easier with the GitPod browser extension!</tip-title>
 >    >  1. To make this even easier, you can install the GitPod browser extension
 >    >     - [Firefox](https://addons.mozilla.org/en-GB/firefox/addon/gitpod/)
->    >     - [Chrome or Edge](https://chrome.google.com/webstore/detail/gitpod-online-ide/dodmmooeoklaejobgleioelladacbekii)
+>    >     - [Chrome or Edge](https://chrome.google.com/webstore/detail/gitpod-always-ready-to-co/dodmmooeoklaejobgleioelladacbeki)
 >    >  2. Now it is just a single click to open any GitHub repository in GitPod
 >    >     ![screenshot of the button the GitPod browser extension adds to GitHub repository ](../../images/gitpod/browser-extension.png)
 >    {: .tip}

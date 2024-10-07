@@ -28,14 +28,28 @@ tags:
   - EBV dataset
   - EBV workflow
   - modeling
-contributors:
-- colineroyaux
-- yvanlebras
-- jbmihoub
+contributions:
+  authorship:
+  - colineroyaux
+  - yvanlebras
+  - dpelletier
+  - jbmihoub
+  funding:
+  - gallantries
+  - pndb
 
+recordings:
+- captioners:
+  - colineroyaux
+  date: '2022-03-03'
+  galaxy_version: '21.09'
+  length: 2H
+  youtube_id: leMPC2Ckehc
+  speakers:
+  - colineroyaux
+
+subtopic: ecologyanalysis
 ---
-
-# Introduction
 
 
 This tutorial aims to present the PAMPA Galaxy workflow, how to use it to compute common
@@ -115,6 +129,7 @@ This first step consist of downloading and properly prepare the data to use it i
 >    for you to find it again later if needed.
 >
 >    {% snippet faqs/galaxy/histories_create_new.md %}
+>
 >    {% snippet faqs/galaxy/histories_rename.md %}
 >
 > 2. Import the CSV files from [Zenodo](https://doi.org/10.5281/zenodo.4264936) via link with the three following links

@@ -1,10 +1,11 @@
 ---
 name: transcriptomics
 type: use
+topic_type: technology
 title: Transcriptomics
 summary: Training material for all kinds of transcriptomics analysis.
 docker_image: "quay.io/galaxy/transcriptomics-training"
-edam_ontology: "topic_3308"
+edam_ontology: ["topic_3308"]
 requirements:
   -
     type: "internal"
@@ -16,7 +17,7 @@ requirements:
       - quality-control
       - mapping
 
-maintainers:
+editorial_board:
   - bebatut
   - mblue9
   - heylf

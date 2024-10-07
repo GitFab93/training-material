@@ -26,8 +26,6 @@ contributors:
 ---
 
 
-# Introduction
-
 Multiplex tissue images are large, multi-channel images that contain intensity data for numerous biomarkers. The methods for generating multiplex tissue images are diverse, and each method can require specialized knowledge for downstream processing and analysis. The MCMICRO ({% cite Schapiro2021 %}) pipeline was developed to process multiplex images into single-cell data, and to have the range of tools to accomodate for different imaging methods. The tools used in the MCMICRO pipeline, in addition to tools for single-cell analysis, spatial analysis, and interactive visualization are available in Galaxy to facilitate comprehensive and accessible analyses of multiplex tissue images. The MCMICRO tools available in Galaxy are capable of processing Whole Slide Images (WSI) and Tissue Microarrays (TMA). WSIs are images in which a tissue section from a single sample occupies the entire microscope slide; whereas, TMAs multiplex smaller cores from multiple samples onto a single slide. This tutorial will demonstrate how to use the Galaxy multiplex imaging tools to process and analyze publicly available TMA test data provided by MCMICRO (Figure 1.).
 
 Find a full [example history](https://cancer.usegalaxy.org/u/watsocam/h/gtnexemplar002tma)
@@ -136,13 +134,13 @@ After illumination is corrected across round tiles, the tiles must be stitched t
 > <warning-title>**Imaging platform differences**</warning-title> 
 > 
 > ASHLAR, among other tools in the MCMICRO and Galaxy-ME pre-processing tools have some parameters that are specific to the 
-imaging patform used. By default, ASHLAR is oriented to work with images from RareCyte scanners. AxioScan scanners render images
-in a different orientation. Because of this, when using ASHLAR on AxioScan images, it is important to select the **Flip Y-Axis**
-parameter to *Yes*
+> imaging patform used. By default, ASHLAR is oriented to work with images from RareCyte scanners. AxioScan scanners render images
+> in a different orientation. Because of this, when using ASHLAR on AxioScan images, it is important to select the **Flip Y-Axis**
+> parameter to *Yes*
 > 
 > ASHLAR will work for most imaging modalities; however, certain modalities require different tools to be registered. For example,
-multiplex immunohistochemistry (mIHC) images must use an aligner that registers each moving image to a reference Hematoxylin image. 
-For this, Galaxy-ME includes the alternative registration tool {% tool **PALOM** %}. 
+> multiplex immunohistochemistry (mIHC) images must use an aligner that registers each moving image to a reference Hematoxylin image. 
+> For this, Galaxy-ME includes the alternative registration tool {% tool **PALOM** %}. 
 >
 {: .warning}
 
@@ -253,7 +251,7 @@ Learn more about this file format at the [anndata documentation](https://anndata
 >    > <warning-title>Important parameter: Unique names for cells/rows</warning-title> 
 >    >
 >    > Setting *"Whether to use unique name for cells/rows"* to `No` to ensures that downstream interactive visualizations will be able to map observational features to the mask CellIDs. 
->    {: .comment}
+>    {: .warning}
 >
 {: .hands_on}
 

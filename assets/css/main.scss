@@ -1,33 +1,7 @@
 ---
 ---
 
- @font-face {
-  font-family: "Atkinson Hyperlegible";
-  src: url(/training-material/assets/fonts/AtkinsonHyperlegible/Atkinson-Hyperlegible-Regular-102a.woff2), url(/training-material/assets/fonts/AtkinsonHyperlegible/Atkinson-Hyperlegible-Regular-102.woff);
-  font-display: swap;
-}
-
- @font-face {
-  font-family: "Atkinson Hyperlegible";
-  src: url(/training-material/assets/fonts/AtkinsonHyperlegible/Atkinson-Hyperlegible-BoldItalic-102a.woff2), url(/training-material/assets/fonts/AtkinsonHyperlegible/Atkinson-Hyperlegible-BoldItalic-102.woff);
-  font-weight: bold;
-  font-style: oblique;
-  font-display: swap;
-}
-
- @font-face {
-  font-family: "Atkinson Hyperlegible";
-  src: url(/training-material/assets/fonts/AtkinsonHyperlegible/Atkinson-Hyperlegible-Italic-102a.woff2), url(/training-material/assets/fonts/AtkinsonHyperlegible/Atkinson-Hyperlegible-Italic-102.woff);
-  font-style: oblique;
-  font-display: swap;
-}
-
- @font-face {
-  font-family: "Atkinson Hyperlegible";
-  src: url(/training-material/assets/fonts/AtkinsonHyperlegible/Atkinson-Hyperlegible-Bold-102a.woff2), url(/training-material/assets/fonts/AtkinsonHyperlegible/Atkinson-Hyperlegible-Bold-102.woff);
-  font-weight: bold;
-  font-display: swap;
-}
+@import "./fontsmain.scss";
 
 $font-size: 15px;
 $tutorial-box-spacing: 1rem;
@@ -47,14 +21,14 @@ $tutorial-box-spacing: 1rem;
 	--code-background: #000;
 
 	--border-light: #ddd;
-	--hyperlink: #0067d6;
+	--hyperlink: #0056b3;
 	--hyperlink-hover: #004590;
 
 	// From Galaxy
 	--brand-color: #2c3143;
 	--brand-color-contrast: #fff;
-	--navbar-border-size: 0px;
-	--navbar-border-color: white;
+	--navbar-border-size: 1px;
+	--navbar-border-color: transparent;
 	--navbar-item-background: transparent;
 	--navbar-item-hover: transparent;
 
@@ -65,50 +39,154 @@ $tutorial-box-spacing: 1rem;
 	// A11y
 	--outline-color: red;
 
-
 	--h1-theme-before: "";
 	--h1-theme-after: "";
 	--h2-theme-before: "";
 	--h2-theme-after: "";
+
+	--border: #888;
+
+	--color-disabled: #ccc;
+
+	// Boxes
+	--overview-color: #8A9AD0;
+	--agenda-color: #86D486;
+	--keypoints-color: #FFA1A1;
+	--tip-color: #FFE19E;
+	--warning-color: #de8875;
+	--comment-color: #ffecc1;
+	--handson-color: #dfe5f9;
+	--question-color: #8A9AD0;
+	--solution-color: #B8C3EA;
+	--details-color: #ddd;
+	--feedback-color: #86D486;
+	--code-color: #86D486;
+	--code-out-color: #fb99d0;
 }
+
+body[data-brightness="light"][data-light_theme="yellow"] {
+	--color-background: #ffe;
+	--text-color: #111;
+}
+
+body[data-brightness="dark"] {
+	--color-background: #000;
+	--color-foreground: #fff;
+	--text-color: #fff;
+	--text-color-muted: #aaa;
+	--border: #aaa;
+	--hyperlink-hover: #fff;
+	--hyperlink: #7bf;
+	--slide-heading-color: #eee;
+
+	--secondary-color: #222;
+	--secondary-color-text: var(--text-color);
+
+}
+
+body[data-brightness="dark"][data-dark_theme="night"] {
+	--color-background: #444;
+	--color-disabled: #222;
+	--text-color: #ccc;
+}
+
+body[data-brightness="dark"][data-dark_theme="midnight"] {
+	--color-disabled: #222;
+}
+
+// High Contrast
+body[data-contrast="high"] {
+	--border: #000;
+	--text-color-muted: var(--text-color) !important;
+	--navbar-border-color: var(--text-color);
+}
+body[data-contrast="high"][data-brightness="dark"]  {
+	--border: #fff;
+}
+
+// Low Contrast
+body[data-contrast="low"] {
+	--border: #ddd;
+}
+
+body[data-contrast="low"][data-brightness="dark"]  {
+	--border: #333;
+}
+
+body[data-font_main="comic-sans"] {
+	font-family: "Comic Sans MS", cursive, sans-serif;
+}
+
+body[data-font_main="open-dyslexic"] {
+	font-family: "OpenDyslexic", "Open Dyslexic", serif;
+}
+
+body[data-font_code="comic-sans"] {
+	pre, code {
+		font-family: "Comic Mono", monospace;
+	}
+}
+
+// All of our themes
+@import "./themes.scss";
+
+select {
+	// .form-control is more specific than select
+	border: 1px solid var(--border) !important;
+	background: var(--color-background) !important;
+	color: var(--text-color) !important;
+
+	&:disabled {
+		background: var(--color-disabled) !important;
+		color: var(--text-color-muted) !important;
+	}
+}
+
+hr {
+	border-top: var(--navbar-border-size) solid var(--border) !important;
+}
+
+.table thead th {
+  border-top: 2px solid var(--border) !important;
+  border-bottom: 2px solid var(--border) !important;
+}
+.table td, .table th {
+  border-top: 1px solid var(--border) !important;
+}
+
 
 /* SLIDES */
 @import "./slides.scss";
 /* SYNTAX */
 @import "./syntax_highlighting.scss";
-/* THEMES */
-@import "./themes.scss";
+
+/* Other CSS libraries we use */
+// If you use .css (i.e. from the file extension) it will use a CSS import
+// which triggers multiple requests.
+@import "./academicons";
+@import "./bootstrap.min";
+@import "./bootstrap-toc.min";
+@import "./leaflet-1.9.3";
+@import "../fontawesome/css/all.min";
+@import "./charts.css@1.1.0";
+
 
 // palette
-// These remain SASS variables because they're used in mixins.
 // Boxes
-$overview-color: #8A9AD0;
-$agenda-color: #86D486;
-$keypoints-color: #FFA1A1;
-$tip-color: #FFE19E;
-$warning-color: #de8875;
-$comment-color: #ffecc1;
-$handson-color: #dfe5f9;
-$question-color: #8A9AD0;
-$solution-color: #B8C3EA;
-$details-color: #ddd;
-$feedback-color: #86D486;
-$code-color: #86D486;
-$code-out-color: #fb99d0;
 
-.color-overview { background: $overview-color; }
-.color-agenda { background: $agenda-color; }
-.color-keypoints { background: $keypoints-color; }
-.color-tip { background: $tip-color; }
-.color-warning { background: $warning-color; }
-.color-comment { background: $comment-color; }
-.color-handson { background: $handson-color; }
-.color-question { background: $question-color; }
-.color-solution { background: $solution-color; }
-.color-details { background: $details-color; }
-.color-feedback { background: $feedback-color; }
-.color-code { background: $code-color; }
-.color-code-out { background: $code-out-color; }
+.color-overview { background: var(--overview-color); }
+.color-agenda { background: var(--agenda-color); }
+.color-keypoints { background: var(--keypoints-color); }
+.color-tip { background: var(--tip-color); }
+.color-warning { background: var(--warning-color); }
+.color-comment { background: var(--comment-color); }
+.color-handson { background: var(--handson-color); }
+.color-question { background: var(--question-color); }
+.color-solution { background: var(--solution-color); }
+.color-details { background: var(--details-color); }
+.color-feedback { background: var(--feedback-color); }
+.color-code { background: var(--code-color); }
+.color-code-out { background: var(--code-out-color); }
 
 
 body {
@@ -139,17 +217,17 @@ body {
     & > h3 ,
     > .box-title {
         font-size: $font-size + 3;
-        margin-left: -$tutorial-box-spacing;
-        margin-right: -$tutorial-box-spacing;
+        margin-inline-start: -$tutorial-box-spacing;
+        margin-inline-end: -$tutorial-box-spacing;
         margin-top: -3.30rem;
         padding-top: calc($tutorial-box-spacing / 2);
         padding-bottom: calc($tutorial-box-spacing / 2);
-        padding-left: $tutorial-box-spacing;
-        padding-right: $tutorial-box-spacing;
+        padding-inline-start: $tutorial-box-spacing;
+        padding-inline-end: $tutorial-box-spacing;
         background-color: $bg-color;
         color: var(--text-color-boxtitle);
         vertical-align: 1em;
-        float: left;
+        float: inline-start;
         border: 1px solid $bg-color;
         border-top-left-radius: 8px;
         border-top-right-radius: 8px;
@@ -193,13 +271,70 @@ body {
 }
 
 
+
+// When boxes are collapsed, they add or remove this class
+// However when someone wants to print the GTN document, we should make all
+// boxes visible, no matter what their collapse state.
+@media screen {
+	.box-collapsed {
+		display: none !important; // important Overrides specifically one case of a learning pathway FAQ where we use some custom display already to get objects floating correctly in the snippet.
+	}
+}
+
+// When someone is printing this
+@media print {
+	// Used for hiding the TOC on tutorials
+	.hide-when-printing {
+		display: none;
+	}
+
+	// Don't break over a page boundary if possible
+	h2,h3,h4,h5,h6,h7,h8 {break-after: avoid-page;}
+	img, svg, table, canvas {break-inside: avoid;}
+
+	// Fun fact: paper is not clickable.
+	// This is mostly applicable for folks printing tutorials which they
+	// probably shouldn't be doing anyway but just in case.
+	section#tutorial-content {
+		a::after {content: " (" attr(href) ")";}
+
+		blockquote.agenda {
+			a::after {content: unset;}
+		}
+	}
+
+	// Save ink.
+	pre.highlight {
+		background: none !important;
+		color: var(--text-color) !important;
+
+		.na { color: #32440d !important; }
+		.sb, .sc, .sd, .s2, .sh, .si, .sx, .sr, .s1, .ss, .s, .sa, .dl {
+			color: #664 !important;
+		}
+		.c, .ch, .cd, .cpf, .cm, .c1 {
+			color: #333 !important;
+		}
+		.gh, .go,
+		.nb, .ni, .nn, .vc, .vg, .vi, .nv, .vm, .w, .bp,
+		.kn, .ow, .o, .nt {
+			color: #222 !important;
+		}
+		.gp {
+			color: #378 !important;
+		}
+	}
+
+}
+
+
 div#theme-selector,div#lang-selector,div#archive-selector {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
 	width: 200px;
 	justify-content: flex-start;
-	margin-left: 1em;
+	margin-inline-start: 1em;
 
 	label.btn,a.btn,button.btn {
 		margin: 0.1em;
@@ -220,6 +355,57 @@ img {
     margin: 2.5%;
 }
 
+ol.toots {
+	li.toot {
+		display: flex;
+		flex-direction: column;
+	}
+	img {
+		width: 46px !important;
+		height: 46px !important;
+	}
+	a.user.boost img {
+		width: 23px !important;
+		height: 23px !important;
+	}
+}
+
+div.main-content {
+	img {
+		height: auto;
+		width: auto;
+	}
+}
+
+figure {
+  text-align: center;
+  margin: 2rem;
+  border: thin silver solid;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+
+
+  & > img {
+      margin-bottom: 1rem;
+      height: auto;
+  }
+
+  & > iframe {
+      margin: auto;
+  }
+
+  figcaption {
+    text-align: justify;
+  }
+}
+
+@media (max-width:992px) {
+  figure {
+  margin: 1rem;
+ }
+}
+
 :not(pre) > code {
     color: var(--code-foreground);
     background: var(--code-background);
@@ -233,28 +419,35 @@ pre.highlight {
     color: var(--code-foreground);
     border: 1px solid var(--text-color-muted);
     @include syntax-dark;
+
+	code > ::selection {
+		color: var(--code-background);
+		background: var(--code-foreground);
+	}
 }
 
-figure {
-  text-align: center;
-  margin: 1rem 2rem;
+/* Make the @@ portions of diffs, which indicate area, much more visible */
+div.language-diff .p {
+	border-top: 1px solid #66d9ef;
+	border-bottom: 1px solid #66d9ef;
 
-  & > img {
-      margin-bottom: 1rem;
-  }
+	border-left: 5px solid #66d9ef;
+	border-right: 5px solid #66d9ef;
 
-  .figcaption-prefix {
-      font-weight: bold;
-  }
+	font-weight: 900;
 
-  figcaption {
-    text-align: justify;
-  }
+	line-height: 3em;
+
+	margin-right: 1em;
+	padding-left: 1em;
+	padding-right: 1em;
+}
+
+body > footer {
+    margin-top: 5em;
 }
 
 footer {
-    margin-top: 3em;
-    text-align: center;
     color: var(--text-color-muted);
     font-size: $font-size - 2;
 }
@@ -278,6 +471,10 @@ nav.navbar {
         color: var(--brand-color-contrast);
     }
 
+    a {
+	border: none;
+    }
+
     .navbar-brand, .navbar-nav li {
 	padding: 0.5em;
 	background: var(--navbar-item-background);
@@ -289,6 +486,11 @@ nav.navbar {
 
     a.navbar-brand {
 	padding-right: 2.5em; // the image seems to work poorly with parent size calculations.
+    }
+
+    // Text decoration not necessary for accessibility here.
+    a {
+        text-decoration: none;
     }
 
     .navbar-collapse {
@@ -428,23 +630,23 @@ blockquote {
     }
 
     &.agenda {
-        @include tutorial-box($agenda-color);
+        @include tutorial-box(var(--agenda-color));
     }
 
     &.tip {
-        @include tutorial-box($tip-color);
+        @include tutorial-box(var(--tip-color));
     }
 
     &.question {
-        @include tutorial-box($question-color);
+        @include tutorial-box(var(--question-color));
     }
 
     &.code-in {
-        @include tutorial-box($code-color);
+        @include tutorial-box(var(--code-color));
     }
 
     &.code-out {
-        @include tutorial-box($code-out-color);
+        @include tutorial-box(var(--code-out-color));
     }
 
     &.code-max-300 {
@@ -454,37 +656,37 @@ blockquote {
     }
 
     &.solution {
-        @include tutorial-box($solution-color);
+        @include tutorial-box(var(--solution-color));
     }
 
     &.comment {
-        @include tutorial-box($comment-color);
+        @include tutorial-box(var(--comment-color));
     }
 
     &.hands_on, &.hands-on {
-        @include tutorial-box($handson-color);
+        @include tutorial-box(var(--handson-color));
     }
 
     &.key_points {
-        @include tutorial-box($keypoints-color);
+        @include tutorial-box(var(--keypoints-color));
     }
 
     &.overview {
-        @include tutorial-box($overview-color);
+        @include tutorial-box(var(--overview-color));
         margin-top: 5rem;
     }
 
     &.warning {
-        @include tutorial-box($warning-color);
+        @include tutorial-box(var(--warning-color));
     }
 
     &.details {
-        @include tutorial-box($details-color);
+        @include tutorial-box(var(--details-color));
     }
 
     &.quote {
-        border-left: 5px solid var(--brand-color);
-        padding-left: 1em;
+        border-inline-start: 5px solid var(--brand-color);
+        padding-inline-start: 1em;
     }
 
     &.spoken {
@@ -500,32 +702,102 @@ blockquote {
     }
 
     &.feedback{
-        @include tutorial-box($feedback-color);
+        @include tutorial-box(var(--feedback-color));
     }
 }
 
 .fold-unfold {
-    margin-left: $tutorial-box-spacing;
+    margin-inline-start: $tutorial-box-spacing;
 }
 .pre-break-lines code {
     white-space: pre-wrap;
 }
 
-.card {
+.card{
 	background: transparent;
 	border: 1px solid var(--border-light);
 	.card-title {
-		background: var(--brand-color);
-		border-bottom: 1px solid var(--border-light);
-		padding: 1.25rem;
 		color: var(--brand-color-contrast);
+
+		// margin-left: -15px; // BS has a 15px margin on cards, this makes the card title fill the card.
+		// margin-right: -15px;
+	}
+
+}
+
+.card.setup-card {
+  .card-title{
+    color: var(--text-color);
+  }
+}
+
+.card:not(.setup-card){
+	.card-title {
+		background: var(--brand-color);
+		padding: 1.25rem;
 	}
 
 	.card-body {
 		padding: 0em;
+		flex: 0 1 auto; // Override BS for the workflow listing.
+
+		// We stripped the padding from the card body in the above line
+		// Thus we need to add it back via margins to each element.
+		// We have to manually exclude the card titles
+		// And also canvases because they apparently calculate their area before the CSS has finished.
+		& > :not(.card-title,canvas){
+			margin-left: 1em;
+			margin-right: 1em;
+		}
 	}
 }
 
+.pathwaylist{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-bottom: 2rem;
+
+    .pathwayitem {
+      background: transparent;
+
+      .card{
+        margin-bottom: 1em;
+      }
+      .card-body{
+        height: 17rem;
+        overflow: hidden;
+      }
+      .card-text{
+        margin: 1rem;
+        vertical-align: center;
+      }
+      .card-title{
+        height: 5rem;
+      }
+      .card-header {
+	    background: var(--brand-color);
+	    border-bottom: 1px solid var(--border-light);
+      }
+    }
+    .pathwaycover {
+        width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        margin-top: 1em;
+        background-color: white;
+        border-radius: 2rem;;
+        padding: 1rem;
+        -webkit-transition: border 0.2s ease-in-out;
+        -o-transition: border 0.2s ease-in-out;
+        transition: border 0.2s ease-in-out;
+    }
+    h3 {
+        margin-top: 0.25rem;
+    }
+
+}
 
 .newslist {
     display: flex;
@@ -630,6 +902,15 @@ blockquote {
     justify-content: space-around;
 }
 
+.contributor-page {
+	img.avatar {
+		background-color: white;
+		border-radius: 20px;
+		// border: 1px solid var(--border-light);
+		// padding: 5px;
+		width: 100%;
+	}
+}
 .hall-of-fame-hero {
     width: 140px;
     margin: 1rem;
@@ -652,9 +933,6 @@ blockquote {
             border: 1px solid var(--border-light);
             padding: 5px;
             width: 100%;
-            -webkit-transition: border 0.2s ease-in-out;
-            -o-transition: border 0.2s ease-in-out;
-            transition: border 0.2s ease-in-out;
         }
     }
 
@@ -681,22 +959,28 @@ blockquote {
 
 // This applies a "dark" style to the dropdown menus on small devices since
 // Bootstrap v4 does not do that by default.
+
+.dropdown-menu {
+	background-color: var(--color-background);
+	border-color: var(--border);
+}
+.dropdown-item {
+	color: var(--text-color);
+
+	&:hover, &:focus, &:active {
+		background-color: var(--brand-color);
+		color:  var(--text-color);
+	}
+}
+
+.dropdown-divider {
+	border-top-color: var(--border);
+}
+
 @media (max-width: 768px) {
     .navbar {
         .dropdown-menu {
-            background-color: transparent;
             border-color: transparent;
-        }
-
-        .dropdown-item {
-            color: var(--text-color-muted);
-
-            &:hover,
-            &:focus,
-            &:active {
-                background-color: transparent;
-                color:  var(--text-color);
-            }
         }
 
         .nav-item,
@@ -745,11 +1029,14 @@ blockquote {
     border-width: 0 2px 1px 0;
     background-color: var(--color-primary);
     border-color: var(--color-darker);
-    cursor: pointer;
 
     &:hover {
         color: #000;
         background-color: var(--color-dimmed);
+    }
+
+    &.label-large {
+	    font-size: 150%;
     }
 }
 
@@ -785,15 +1072,25 @@ blockquote {
 }
 
 
-/* WCAG Contrast. These aim to pass AA level for normal sized text. */
+/* WCAG Contrast. These aim to pass AAA level for normal sized text. */
 a {
     color: var(--hyperlink);
+    border-bottom: 1px dotted var(--hyperlink);
 
     &:hover,
     &:focus,
+    &:focus-visible,
     &:active {
         color: var(--hyperlink-hover);
-        text-decoration: underline;
+        border-bottom: 1px solid var(--hyperlink-hover);
+        text-decoration: none;
+    }
+
+    &.btn-info {
+	color: black;
+    }
+    &.badge-info {
+	color: black;
     }
 }
 
@@ -825,7 +1122,7 @@ nav[data-toggle='toc'] {
 	.nav-link.active:focus,
 	.nav-link.active:hover {
 		color: var(--hyperlink);
-		border-left: 2px solid var(--hyperlink);
+		border-inline-start: 2px solid var(--hyperlink);
 	}
 
 
@@ -833,14 +1130,13 @@ nav[data-toggle='toc'] {
         li {
             a {
 		color: var(--text-color-muted);
-                padding-left: 0px;
+                padding-inline-start: 0px;
                 &:hover,
                 &:focus,
                 &:active {
-                    padding-left: 0px;
+                    padding-inline-start: 0px;
                     color: var(--hyperlink);
-                    border-left: none;
-                    text-decoration: underline;
+                    border-inline-start: none;
                 }
             }
         }
@@ -848,7 +1144,7 @@ nav[data-toggle='toc'] {
 }
 
 .col-sm-2 {
-    padding-left: 0px;
+    padding-inline-start: 0px;
 }
 
 /* small screens */
@@ -893,21 +1189,75 @@ nav[data-toggle='toc'] {
     flex-direction: row;
     align-items: center;
     border-radius: 1em;
-    border: 1px solid var(--hyperlink);
+    border: 1px dotted var(--hyperlink);
     padding-right: 0.5em;
     margin: 0.2em;
     line-height: 1em;
     flex-shrink: 0;
 
     img {
-        height: 1em;
+	height: 2em !important;
+	width: 2em !important;
         border-radius: 50%;
         margin: 0 0.25em 0 0;
     }
 
     &:hover {
+	background: var(--brand-color);
+	color: var(--brand-color-contrast);
 	border: 1px solid var(--hyperlink-hover);
     }
+}
+
+.contributor-badge-inline {
+    /* prevent breaking across lines */
+    white-space: nowrap;
+    img {
+	height: 1em !important;
+	width: 1em !important;
+        border-radius: 50%;
+        margin: 0 0.25em 0 0;
+    }
+}
+
+.funder-badge {
+	display: flex;
+	flex-direction: row;
+	border: 1px solid var(--hyperlink);
+	color: var(--text-color);
+	max-width: 24em;
+	height: 8em;
+	margin-inline-end: 1em;
+	margin-bottom: 1em;
+    padding: 1em;
+
+	div.avatar {
+		display: flex;
+		align-items: center;
+
+		img.funder-avatar {
+			margin: 0;
+            padding: 0.5em;
+			max-height: 8em;
+			min-width: 8em;
+			max-width: 8em;
+			margin-inline-end: 1em;
+		}
+	}
+
+	div.info {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+
+		div.name {
+			font-size: 1.2rem;
+		}
+		div.description {
+			overflow-y: hidden;
+			font-size: 0.9rem;
+		}
+	}
 }
 
 table.contributions{
@@ -932,6 +1282,15 @@ div.highlight .btn{
 	top:4px;
 }
 
+@media (prefers-reduced-motion) {
+  .btn {
+	-webkit-transition: none;
+	-o-transition: none;
+	transition: none;
+  }
+}
+
+
 div.highlight:hover .btn,div.highlight .btn:focus{
 	opacity:1
 }
@@ -941,26 +1300,27 @@ div.highlight:hover .btn,div.highlight .btn:focus{
         display: inline;
     }
     .search_box {
-        float: right;
+        float: inline-end;
         i {padding-right: .5rem;}
     }
     #clear_search{
         cursor: pointer;
     }
-
-    .topic-icon {
-        padding: .5rem .75rem;
-    }
 }
 
 ul.supporting_material{
     .btn{
-        padding-left: 0px;
+        padding-inline-start: 0px;
         padding-top: 0px;
         padding-bottom: 0px;
-        padding-right: 10px;
+        padding-inline-end: 10px;
         font-size: 15px;
     }
+}
+
+// chrome reports this improves UX by providing better click targets
+li {
+	padding-bottom: 0.2em;
 }
 
 .alert-heading {
@@ -976,7 +1336,7 @@ ul.supporting_material{
             width: 47.5%;
         }
         .code-out {
-            margin-left: 5%;
+            margin-inline-start: 5%;
             width: 47.5%;
         }
     }
@@ -986,27 +1346,51 @@ ul.supporting_material{
   margin-top: 1em;
 }
 
-span.tool {
-	border: 1px solid #999;
-	padding: 2px;
-	border-radius: 5px;
 
-	&:hover {
-		border: 1px solid blue;
-
+// The default presentation
+body {
+	.show-when-galaxy-proxy-active {
+		// cursor: not-allowed;
+		display: none;
 	}
 
-	&.galaxy-proxy-active {
+	.hide-when-galaxy-proxy-active {
+		display: unset;
+	}
+
+	span.tool, span.workflow {
+		border: 1px solid #999;
+		padding: 2px;
+		border-radius: 5px;
+
+		&:hover {
+			border: 1px solid blue;
+		}
+	}
+}
+
+// The fancier presentation when possible
+body.galaxy-proxy-active {
+	.show-when-galaxy-proxy-active {
+		cursor: pointer;
+		display: unset;
+	}
+
+	.hide-when-galaxy-proxy-active {
+		display: none;
+	}
+
+	span.tool, span.workflow {
 		cursor: pointer;
 		color: var(--brand-color-contrast);
 		background-color: var(--brand-color);
 		border-color: var(--brand-color);
 		padding: 0.2em 0.5em;
-	}
 
-	&.galaxy-proxy-active:hover {
-		background-color: var(--hyperlink);
-		border-color: var(--hyperlink);
+		&:hover {
+			background-color: var(--hyperlink);
+			border-color: var(--hyperlink);
+		}
 	}
 }
 
@@ -1104,7 +1488,7 @@ div.contributors-line {
       font-weight: initial;
     }
     dd {
-      margin-left: auto;
+      margin-inline-start: auto;
       width: calc(100% - 9em);
       display: flex;
     }
@@ -1123,12 +1507,12 @@ a.btn {
 }
 
 $btn-red: #bf4646;
-$btn-orange:$warning-color;
-$btn-yellow:$tip-color;
-$btn-green:$agenda-color;
-$btn-blue:$handson-color;
-$btn-purple:$question-color;
-$btn-pink:$keypoints-color;
+$btn-orange: var(--warning-color);
+$btn-yellow: var(--tip-color);
+$btn-green: var(--agenda-color);
+$btn-blue: var(--handson-color);
+$btn-purple: var(--question-color);
+$btn-pink: var(--keypoints-color);
 
 
 .btn-red{
@@ -1211,22 +1595,57 @@ $btn-pink:$keypoints-color;
   margin: 5px;
 }
 
+.home-cta-button {
+	width: 45%;
+	flex-direction: column;
+	padding: 5px;
+	font-size:1.25rem;
+	margin: 5px;
+	color: var(--text-color); // don't need to distinguish for wcag.
+	border: 1px solid var(--border-light);
+
+	div {
+		font-size: 1.3rem !important;
+	}
+
+	&:hover {
+		box-shadow: 2px 2px 4px var(--text-color);
+	}
+}
+
+.button-group {
+	display: flex;
+	align-items: stretch;
+	flex-wrap: wrap;
+	justify-content: space-around;
+}
+
+.btn-primary {
+	background-color: var(--brand-color);
+	border-color: var(--brand-color);
+	color: var(--brand-color-contrast);
+}
+.btn-success {
+	background-color: #1d7531; // AA
+	border-color: #1d7531; // AA
+}
+
 
 /* CYOA */
 .gtn-cyoa {
     input[type="radio"] {
         display: none;
         &:checked+label {
-            background-color: $question-color;
+            background-color: var(--question-color);
         }
     }
 
     .btn-secondary {
         color: var(--text-color);
-        background-color: $handson-color;
+        background-color: var(--handson-color);
         border-color: transparent;
         &:hover {
-            background-color: $solution-color;
+            background-color: var(--solution-color);
         }
     }
 
@@ -1243,19 +1662,13 @@ $btn-pink:$keypoints-color;
 	padding: 0rem;
 }
 
-/*
-Maybe something like this for the case where they do not select anything?
-.openstack {
-	border-left: 2px solid red;
+ul.no-bullets {
+	list-style: none;
+	padding-inline-start: 0;
 }
-.digitalocean {
-	border-left: 2px solid blue;
-}
-*/
-
 ul.text-list, ol.text-list {
-    list-style: none;
-	  padding-left: 0;
+	list-style: none;
+	padding-inline-start: 0;
 
     li {
         display: inline;
@@ -1271,9 +1684,23 @@ ul.text-list, ol.text-list {
         margin-bottom: 0;
         text-align: center;
     }
+
+    .card-title-small {
+        font-size: 250%;
+        font-weight: 900;
+        margin-bottom: 0;
+        text-align: center;
+
+    }
     .card-text {
         text-align: center;
         font-size: 150%;
+        padding: 0.3em;
+    }
+
+    .card-text-small {
+        text-align: center;
+        font-size: 125%;
         padding: 0.3em;
     }
 }
@@ -1292,6 +1719,10 @@ ul.text-list, ol.text-list {
 .dropdown-item:focus-visible {
 }
 
+.dropdown-header {
+	color: var(--text-color-muted);
+}
+
 ol.breadcrumb {
 	background: var(--secondary-color);
 
@@ -1305,31 +1736,210 @@ ol.breadcrumb {
 a[target="_blank"]::after {
   content: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVR42qXKwQkAIAxDUUdxtO6/RBQkQZvSi8I/pL4BoGw/XPkh4XigPmsUgh0626AjRsgxHTkUThsG2T/sIlzdTsp52kSS1wAAAABJRU5ErkJggg==) " (opens in new tab)";
   display: inline-block;
-  margin-left: 0.2em;
+  margin-inline-start: 0.2em;
   height: 1em;
 }
 
-.tutorials-list {
-/* Big */
-@media (min-width:768px) {
-    .duplicate {
-        display: none;
+/* Not for figures where it's duplicated */
+figure > a[target="_blank"]::after {
+	content: unset;
+}
+
+// For the git-gat learning pathway boxes
+#git-gat-timeline {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+#git-gat-timeline li  {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--text-color);
+    border-radius: 5px;
+    padding: 0.5em;
+    margin: 0.5em;
+}
+#git-gat-timeline li.active {
+    background: #a8ffa8;
+}
+#git-gat-timeline li.active a {
+    color: black;
+}
+#git-gat-timeline li.disabled {
+    background: #eee;
+}
+#git-gat-timeline li.disabled a {
+    color: #555;
+}
+#git-gat-timeline span {
+    align-self: center;
+}
+
+
+.logosoup {
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: flex-end;
+	row-gap: 1em;
+
+	figure {
+		max-width: 20em;
+		margin: 0rem 0.5rem;
+		border: 0px transparent;
+
+		img {
+			max-height: 5em;
+		}
+
+		figcaption {
+			text-align: left;
+		}
+	}
+
+	// Unset this for logos on the homepage
+	.logo {
+		border: none;
+	}
+}
+
+section#tutorial-content {
+	margin-top: 2rem;
+}
+
+.eventtable {
+  th {
+    font-weight: bold;
+  }
+  .eventtable-date{
+      white-space: nowrap;
+  }
+  .eventtable-title {
+    font-weight: bold;
+  }
+  .eventtable-description{
+    margin-top: 0.25 rem;
+    font-size: 80%;
+  }
+}
+
+section.event {
+    .event-image{
+      margin-bottom: 1em;
+    }
+
+	hgroup {
+		border: 1px solid var(--border-light);
+		box-shadow: 0 0 5px var(--border-light);
+		padding: 0 1rem;
+		margin-bottom: 2rem;
+
+		h1 {
+			font-weight: 900;
+		}
+
+		p {
+			text-transform: uppercase;
+			color: var(--text-color-muted);
+		}
+	}
+
+	.nav-tabs {
+		button.nav-link {
+			font-weight: 800;
+		}
+	}
+
+}
+.nav-tabs {
+	// Tabs default to a text colour that isn't overridden somewhere else.
+
+	.nav-item {
+		margin-bottom: 0;
+		padding-bottom: 0;
+		border: 1px solid transparent;
+
+		&:hover {
+			color: var(--hyperlink-hover);
+			border: 1px solid var(--hyperlink-hover);
+		}
+
+		button.nav-link{
+			color: var(--text-color);
+			cursor: pointer;
+			background: none;
+			font-size: 1.2rem;
+			border-top-left-radius: 0;
+			border-top-right-radius: 0;
+
+			&:hover {
+				color: var(--hyperlink-hover);
+			}
+
+			&.active {
+				background: var(--overview-color);
+				border: 1px solid var(--overview-color);
+				color: white;
+			}
+		}
+	}
+
+}
+
+body[data-brightness="dark"] {
+	img.invert-safe {
+		filter: invert(1);
+	}
+
+	.modal-content {
+		button.close {
+			filter: invert(1);
+		}
+	}
+}
+
+.modal-dialog {
+	border: 1px solid var(--border);
+
+	.modal-content {
+		background: var(--color-background);
+	}
+}
+
+
+.recording {
+}
+
+.recording-video {
+    width: 75%;
+
+    iframe {
+      width:100%;
+      height: 100%;
+      aspect-ratio: 16 / 9;
     }
 }
 
-/* Skinny */
-@media (max-width:767px) {
-    table.table.table-responsive {
-        display: inline-table;
+.recording-metadata {
+    table tbody {
+      display: block;
     }
-    tr th:not(:first-child) {
-        display: none;
-    }
-    tr td:not(:first-child) {
-        display: none;
-    }r
-    .duplicate {
-        display: unset;
-    }
-}
+
+	table tr td {
+		padding: 0.3em;
+        width: 100%;
+        display: table-cell;
+	}
+	table tr td:first-child {
+		text-align: right;
+        display: table-cell;
+        width: 25%;
+	}
+    table tr td:nth-child(2) {
+		text-align: left;
+        display: table-cell;
+        width: 100%;
+	}
+
 }

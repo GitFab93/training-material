@@ -28,13 +28,12 @@ requirements:
 contributors:
 - estebanpw
 
+tags:
+  - plants
+  - prokaryote
+
 ---
 
-
-# Introduction
-
-
-<!-- This is a comment. -->
 
 Sequence comparison is a core problem in bioinformatics. It is used widely in evolutionary studies, structural and functional analyses, assembly, metagenomics, etc. Despite its regular presence in everyday Life-sciences pipelines, it is still not a trivial step that can be overlooked. Therefore, understanding how sequence comparison works is key to developing efficient workflows that are central to so many other disciplines.
 
@@ -56,7 +55,7 @@ This tutorial is divided into two large sections:
 
 # Fine-grained sequence comparison
 
-Imagine you are working on an evolutionary study regarding the species *Mycoplasma hyopneumoniae*. In particular, you are interested in the strains `232` and `7422` and wish to compare their DNA sequence to know more about the evolutionary changes that took place between both. The workflow you will follow starts with (1) acquiring the data, (2)  getting it ready for Galaxy, (3) running the comparison and (4) inspecting and working with the resulting alignments. Let's go! 
+Imagine you are working on an evolutionary study regarding the species *Mycoplasma hyopneumoniae*. In particular, you are interested in the strains `232` and `7422` and wish to compare their DNA sequence to know more about the evolutionary changes that took place between both. The workflow you will follow starts with (1) acquiring the data, (2)  getting it ready for Galaxy, (3) running the comparison and (4) inspecting and working with the resulting alignments. Let's go!
 
 ## Preparing the data
 
@@ -67,6 +66,7 @@ First we will be uploading the data to Galaxy so that we can run our tools on it
 > 1. Create a new history for this tutorial and give it a descriptive name (e.g. "Mycoplasma comparison hands-on")
 >
 >    {% snippet faqs/galaxy/histories_create_new.md %}
+>
 >    {% snippet faqs/galaxy/histories_rename.md %}
 >
 > 2. Import `mycoplasma-232.fasta` and `mycoplasma-7422.fasta` from [Zenodo](https://zenodo.org/record/4485547#.YBj8XHmCGUk).
@@ -83,6 +83,7 @@ First we will be uploading the data to Galaxy so that we can run our tools on it
 > 3. Rename the files to `232.fasta` and `7422.fasta` and change the datatype if needed to `fasta` (Galaxy will auto-discover the format of the files).
 >
 >    {% snippet faqs/galaxy/datasets_rename.md %}
+>
 >    {% snippet faqs/galaxy/datasets_change_datatype.md %}
 >
 {: .hands_on}
@@ -115,7 +116,7 @@ We will now run a comparison between *Mycoplasma hyopneumoniae 232* and *Mycopla
 >    - *"Minimum length"*: `50`
 >    - *"Minimum similarity"*: `60`
 >    - *"Generate alignments file?"*: `Extract alignments (CSV and alignments file)`
-> 2. Check out the files that have been generated, i.e. the `CSV` and the `Alignments` file. 
+> 2. Check out the files that have been generated, i.e. the `CSV` and the `Alignments` file.
 >    > <question-title></question-title>
 >    >
 >    > 1. What information is provided in the `CSV` file?
@@ -127,7 +128,7 @@ We will now run a comparison between *Mycoplasma hyopneumoniae 232* and *Mycopla
 >    > > 2. The `Alignments` file contains the actual regions of the query and reference sequence for each alignment detected. With this file, you can investigate individual alignments, find mutations and differences between the sequences, extract the aligned part, etc.
 >    > > 3. Changing the parameters affect the number of alignments GECKO will detect. In fact, if we use parameters that are too restrictive, then we might not get any alignments at all! On the other hand, if we use parameters that are too permissive, then we might get a lot of noise in the output. Thus, it is very important to understand what the parameters do. Never leave your parameters default, always know what they do! Check out the help section to get information about the parameters.
 >    >  {: .solution }
->    {: .question} 
+>    {: .question}
 >
 >    > <comment-title>Note about parameters</comment-title>
 >    > 1. Besides the `minimum length` and `minimum similarity` parameters, which are applied as a filter after the comparison is completed, the `k-mer seed size` is an internal parameter that regulates the number of seeds that can be found. A smaller `k-mer` size will translate into detecting more seeds, which are starting points for alignments.
@@ -139,10 +140,10 @@ We will now run a comparison between *Mycoplasma hyopneumoniae 232* and *Mycopla
 
 ## Post-processing: extracting alignments
 
-We will now use additional tools to post-process our alignments. Consider the case where you are interested in a set of DNA repeats located at a given position in the sequences. 
+We will now use additional tools to post-process our alignments. Consider the case where you are interested in a set of DNA repeats located at a given position in the sequences.
 
 > <comment-title>Note about interactive exploration of alignments</comment-title>
-> In a different scenario where e.g. you do not know what to look for or need to find the location of particular alignments, and you need an interactive exploration, you can also use `GECKO-MGV` to ease the process. `GECKO-MGV`generates a visual representation where you can zoom in and out of the alignments, select and export as FASTA, etc., find more in the `GECKO-MGV` article ({% cite diaz2019combining %}) or run it with a dockerized container from [here](https://github.com/estebanpw/docker-geckomgv).
+> In a different scenario where e.g. you do not know what to look for or need to find the location of particular alignments, and you need an interactive exploration, you can also use `GECKO-MGV` to ease the process. `GECKO-MGV`generates a visual representation where you can zoom in and out of the alignments, select and export as FASTA, etc., find more in the `GECKO-MGV` article ({% cite diaz2019combining %}) or run it with a dockerized container, as described in the [GitHub repository](https://github.com/estebanpw/docker-geckomgv).
 {: .comment}
 
 
@@ -158,7 +159,7 @@ Let's extract the repeats highlighted in red (Figure 1, right) which are aligned
 > 1. Search for the tool {% tool [Text reformatting with AWK](toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.2) %} and run it with the following parameters
 >    - {% icon param-file %} *"File to process"*: `Gecko on data 2 and 1: Alignments` (Note: if you have run the previous experiment with different parameters, make sure to select here the alignments file corresponding to the first experiment, and make sure you ran it with the same parameters!)
 >    - *"AWK Program"*: `BEGIN{FS=" "} /@\(196[0-9][0-9]/ { printf(">sequence%s%s\n", $(NF-1), $NF); getline; while(substr($0,1,1) != ">"){ if(substr($0,1,1) =="Y"){ print $2; } getline; } } ` (Paste this code into the text box)
->    
+>
 >    > <comment-title>Note about AWK</comment-title>
 >    > Although the AWK script looks a bit threatening, it is very simple:
 >    >  - The `BEGIN{FS=" "}` tells it to separate fields by a space.
@@ -170,6 +171,7 @@ Let's extract the repeats highlighted in red (Figure 1, right) which are aligned
 > 2. Change the name of the output file `Text reformatting on data ...` to `repeats` Change the datatype to `.fasta`.
 >
 >    {% snippet faqs/galaxy/datasets_rename.md %}
+>
 >    {% snippet faqs/galaxy/datasets_change_datatype.md %}
 >
 > 3. {% tool [ClustalW](toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.2) %} with the following parameters
@@ -208,7 +210,7 @@ sequence@_19610_25551_      TTTCTCGCCACCCGATAAATCTTTGACTTGTTGATTTAGTTTTTCATTTT
 sequence@_19610_31252_      CGATATTGAGGAAATTTGCACTTTTTTCAAGTAAGACTTGGTCAAATTCC
 sequence@_19610_28814_      CGATATTGAGGAAATTTGCACTTTTTTCAAGTAAGACTTGGTCAAATTCC
 sequence@_19610_25551_      CAATATTAAGAAAATTTGCTCTTTTTTCAAGCAAATTTTGATCAAATTCT
-                            * ***** ** ******** *********** **   *** ******** 
+                            * ***** ** ******** *********** **   *** ********
 
 sequence@_19610_31252_      CTTTTAATTATGTTATTTCCAATTAAAATATTATTTTTAACCGATAAATT
 sequence@_19610_28814_      CTTTTAATTATGTTATTTCCAATTAAAATATTATTTTTAACCGATAAATT
@@ -223,20 +225,20 @@ sequence@_19610_25551_      TTCAATTAGGTTAAAATCCTGAAAAACTACATCAATTAAAGGATTTTTTT
 sequence@_19610_31252_      CTTCTTTACCTT
 sequence@_19610_28814_      CTTCTTTACCTT
 sequence@_19610_25551_      CTTCTTT-----
-                            *******     
+                            *******
 
 ```
 We can see that there are several locus along the duplicated repeats where single point mutations have taken place, and that the ending of the last repeat is missing.
 
 
 
-So far we have learnt how to run our own custom sequence comparison, extract a set of DNA repeats and perform multiple sequence alignment on them (MSA). While this represents an common example of a bioinformatics pipeline, in the next part of the tutorial we will jump to a large-scale comparison scenario where we do not need fine-grained alignments, but instead we will be looking at the "bigger picture" using alignment-free methods. 
+So far we have learnt how to run our own custom sequence comparison, extract a set of DNA repeats and perform multiple sequence alignment on them (MSA). While this represents an common example of a bioinformatics pipeline, in the next part of the tutorial we will jump to a large-scale comparison scenario where we do not need fine-grained alignments, but instead we will be looking at the "bigger picture" using alignment-free methods.
 
 # Coarse-grained sequence comparison
 
 In this second part of the tutorial, we are going to work with chromosome-sized sequences. While we can still use `GECKO` for chromosomes, it will take some more time and resources. However, consider now the case where you do not need alignments, but rather are in one of the following cases:
 
-- You are working with a very large *de novo* assembly genome for which you do not know the strain and thus you need to compare it to several candidates. 
+- You are working with a very large *de novo* assembly genome for which you do not know the strain and thus you need to compare it to several candidates.
 - You want to study large evolutionary rearrangements at a block level rather than alignment level at several species at once.
 - You want to generate a dotplot between several massive chromosomes from e.g. plants to find the main syntenies, but your sequences are full of repeats and other computational approaches fail.
 
@@ -259,6 +261,7 @@ Let us now jump into the hands-on! We will learn how to compare chromosomes with
 > 1. Create a new history for this tutorial and give it a descriptive name (e.g. "Chromosome comparison hands-on")
 >
 >    {% snippet faqs/galaxy/histories_create_new.md %}
+>
 >    {% snippet faqs/galaxy/histories_rename.md %}
 >
 > 2. Import `aegilops_tauschii_chr1.fasta` and `triticum_aestivum_chr1.fasta` from [Zenodo](https://zenodo.org/record/4485547#.YBj8XHmCGUk).
@@ -275,7 +278,9 @@ Let us now jump into the hands-on! We will learn how to compare chromosomes with
 > 3. Rename the files to `aegilops.fasta` and `triticum.fasta` and change the datatype to `fasta` if needed.
 >
 >    {% snippet faqs/galaxy/datasets_rename.md %}
+>
 >    {% snippet faqs/galaxy/datasets_change_datatype.md %}
+>
 >    > <comment-title>Note on the name of the chromosomes</comment-title>
 >    > Please notice that these chromosomes are not labelled as "chromosome 1" at their original sources. We have renamed them for simplicity.
 >    {: .comment}
@@ -307,28 +312,28 @@ Let us now jump into the hands-on! We will learn how to compare chromosomes with
 > 2. Run the job and wait for the results. It should take around ~3 minutes.
 > 3. Let's inspect the output files:
 >    - *"Comparison matrix"*: This file is the "core" of the comparison. It contains the heuristically matched seeds sampled per section of the chromosomes. This file is used for custom post-processing.
->    - *"Comparison dotplot"*: This file is a `.png` image representing the pairwise comparison. 
->    - *"Comparison metainformation"*: This CSV file contains information about the comparison such as name of the sequences compared, length, etc. It is particularly useful when using multi-fasta inputs. 
->    - *"Detected events"*: This CSV file contains information regarding rearrangements automatically detected. 
->    - *"Detected events plot"*" This file is a `.png` image showing the detected events. 
+>    - *"Comparison dotplot"*: This file is a `.png` image representing the pairwise comparison.
+>    - *"Comparison metainformation"*: This CSV file contains information about the comparison such as name of the sequences compared, length, etc. It is particularly useful when using multi-fasta inputs.
+>    - *"Detected events"*: This CSV file contains information regarding rearrangements automatically detected.
+>    - *"Detected events plot"*" This file is a `.png` image showing the detected events.
 >    - *"Comparison score"*: This text file contains the scoring distance between the query and the reference.
 >
 >    > <comment-title>About parameters</comment-title>
 >    >
 >    > Some of the parameters used in `CHROMEISTER` are similar to those in `GECKO`, but others are new, in particular:
->    > 1. *"Output dotplot size"*: This number represents the width and height of the resulting comparison plot, but it also affects the degree of precision with which alignment-free blocks are calculated. A value of `1000` is adequate for mostly everything (resulting in a `1000x1000` output doplot), but for extremely large sequences a value of `2000` will yield more resolution since less blocks will be grouped together. 
+>    > 1. *"Output dotplot size"*: This number represents the width and height of the resulting comparison plot, but it also affects the degree of precision with which alignment-free blocks are calculated. A value of `1000` is adequate for mostly everything (resulting in a `1000x1000` output doplot), but for extremely large sequences a value of `2000` will yield more resolution since less blocks will be grouped together.
 >    > 2. *"K-mer seed size"*: This value is the same as in `GECKO`. Generally, `32` is a good choice for any sequence that is not very small such as the mycoplasmas from the previous part of the tutorial, which were around 1 Mbp in size.
 >    > 3. *"Diffuse value"*: This parameter regulates the stringency with which alignment-free seeds are matched. A diffuse value of `1` means perfect matching, whereas a value of `4` means match only a fourth of the seed (taken in uniform steps). The value of `4` is recommended for everything except when signals start to deteriorate in large comparisons with plenty of repeats.
 >   > 4. The *"Add grid to plot for multi-fasta data sets"* parameter adds grid lines to the plot to separate multiple sequences. This is useful when using multi-fasta inputs.
 >   > 5. The *"Generate image of detected events"* parameter will include, if enabled, a plot of the rearrangements detected with colors, one per type of rearrangement. More on that later!
 >    {: .comment}
->    >
+>
 >
 {: .hands_on}
 
 
 
-Your `Comparison dotplot` file (remember to inspect each using the {% icon galaxy-eye %} icon) should look like this: 
+Your `Comparison dotplot` file (remember to inspect each using the {% icon galaxy-eye %} icon) should look like this:
 
 ![Single chromosome comparison](../../images/hpc-for-lsgc/aegilops-triticum.png "Chromosome comparison corresponding to <em>Aegilops tauschii</em> and <em>Triticum aestivum</em> as generated with CHROMEISTER. Each axis corresponds to one sequence, from origin to end. ")
 
@@ -339,7 +344,7 @@ Figure 3 shows the comparison plot for the plant chromosomes. Notice that the or
 - Blocks that are not in the main diagonal are "transposed", meaning that they have been rearranged in one of the sequences but not in the other. These can also be inverted.
 
 > <comment-title>Note on the comparison plot</comment-title>
-Notice that the comparison plot is only an approximation. It is aimed at showing the general location and direction of syntenies. For example, if `CHROMEISTER` was run with parameter **Output dotplot size** equal to `1000`, then each pixel in the plot contains the averaged information of nearly 500,000 base pairs! Thus, any block can contain lots of smaller rearrangements, mutations, inversions, etc., that are ignored for the sake of providing a clean overview of the general alignment direction in a pairwise comparison.
+> Notice that the comparison plot is only an approximation. It is aimed at showing the general location and direction of syntenies. For example, if `CHROMEISTER` was run with parameter **Output dotplot size** equal to `1000`, then each pixel in the plot contains the averaged information of nearly 500,000 base pairs! Thus, any block can contain lots of smaller rearrangements, mutations, inversions, etc., that are ignored for the sake of providing a clean overview of the general alignment direction in a pairwise comparison.
 {: .comment}
 
 Also note that a `score` value can be seen in the title of the plot (this value is also available in the **Comparison score** file). This value is calculated based on the alignment coverage and number of rearrangements and can be used to automatically filter out similar from dissimilar sequence comparisons. A value of `0` means that the sequences are nearly equal (rearrangement-wise), whereas a value closer to `1` means that the sequences are more dissimilar.

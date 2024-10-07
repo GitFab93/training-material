@@ -38,7 +38,7 @@ notebook:
   pyolite: true
 ---
 
-
+Doing calculations with hundreds of variables called `pressure_001`, `pressure_002`, etc. would be at least as slow as doing them by hand. Using a *list* to store many values together solves that problems. Lists are surrounded by square brackets: `[`, `]`, with values separated by commas:
 
 > <agenda-title></agenda-title>
 >
@@ -49,9 +49,6 @@ notebook:
 >
 {: .agenda}
 
-# Lists
-
-Doing calculations with a hundred variables called `pressure_001`, `pressure_002`, etc. would be at least as slow as doing them by hand. Using a *list* to store many values together solves that problems. Lists are surrounded by square brackets: `[`, `]`, with values separated by commas:
 
 ```python
 pressures = [0.273, 0.275, 0.277, 0.275, 0.276]
@@ -573,8 +570,9 @@ print(f'second time: {values}') # should print [3, 5]
 > > lithium
 > >
 > > ```
-> The first statement prints the whole string, since the slice goes beyond the total length of the string.
-> The second statement returns an empty string, because the slice goes "out of bounds" of the string.
+> >
+> > The first statement prints the whole string, since the slice goes beyond the total length of the string.
+> > The second statement returns an empty string, because the slice goes "out of bounds" of the string.
 > {: .solution}
 {: .question}
 

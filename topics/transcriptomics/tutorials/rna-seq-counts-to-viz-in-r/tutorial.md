@@ -37,11 +37,23 @@ contributors:
   - bebatut
   - fpsom
   - tobyhodges
-  - erasmusplus
+  - gallantries
+
+recordings:
+- captioners:
+  - hexylena
+  - shiltemann
+  - fpsom
+  date: '2021-02-15'
+  galaxy_version: '21.01'
+  length: 30M
+  youtube_id: rJWgnLgA2BE
+  speakers:
+  - fpsom
+
 ---
 
-# Introduction
-
+This tutorial will show you how to visualise RNA Sequencing Counts with R
 
 {% include topics/data-science/tutorials/r-basics/tutorial_origin.md %}
 

@@ -1,8 +1,8 @@
 ---
 layout: tutorial_hands_on
 title: Regional GAM
-zenodo_link: "https://zenodo.org/record/1324204#.W2BmRn7fNE4"
-edam_ontology: "topic_0610"
+zenodo_link: "https://zenodo.org/record/1324204"
+edam_ontology: ["topic_0610"]
 questions:
     - "What are abundance and trends of a butterfly species?"
 objectives:
@@ -25,9 +25,9 @@ contributors:
     - yvanlebras
     - bebatut
     - sbenateau
----
 
-# Introduction
+subtopic: ecologyanalysis
+---
 
 
 This tutorial will show you how to study species abundance through the computation of a flight curve, abundance index, and trends. It will explain you how to use different [regionalGAM](https://github.com/RetoSchmucki/regionalGAM) tools on Galaxy allowing you to deal with datasets containing abundance information for various species per site and per date through a couple of years.
@@ -143,8 +143,8 @@ Here, we will only keep the sites that are in the Netherlands (NLBMS.XX). We wan
 > > > <solution-title></solution-title>
 > > > You can do that using:
 > > > 1. **Paste two files side by side tool** {% icon tool %} with the following parameters:
-> >     - {% icon param-file %} *"paste"*: output from **RData parser** {% icon tool %} headed with "SPECIES"
-> >     - {% icon param-file %}*"and"*: output from **RData parser** {% icon tool %} with headed with "SITE"
+> > >   - {% icon param-file %} *"paste"*: output from **RData parser** {% icon tool %} headed with "SPECIES"
+> > >   - {% icon param-file %}*"and"*: output from **RData parser** {% icon tool %} with headed with "SITE"
 > > > 2. Repeat **Paste two files side by side** {% icon tool %} executions as many times as there are separated files in order to create a final dataset with all the columns:
 > > >     1. Repeat **Paste two files side by side tool** {% icon tool %} to paste the file containing 2 columns with the one headed by `YEAR`
 > > >     1. Repeat **Paste two files side by side tool** {% icon tool %} to paste the file containing 3 columns with the one headed by `MONTH`
@@ -180,9 +180,9 @@ As the dataset is quite big and may contain heterogeneous information, we need t
 >
 > To test these steps, you can use the following dataset:
 >
->   ```
->   https://zenodo.org/record/1324204/files/Dataset%20multispecies%20Regional%20GAM.csv
->   ```
+> ```
+> https://zenodo.org/record/1324204/files/Dataset%20multispecies%20Regional%20GAM.csv
+> ```
 >
 > > <question-title></question-title>
 > >
